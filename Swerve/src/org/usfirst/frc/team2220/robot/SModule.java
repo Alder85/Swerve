@@ -29,12 +29,12 @@ public class SModule {
 	{
 		speedEnc = sEnc;
 		speedMotor = sTalon;
-		speed = new PIDController(0.0, 0.0, 0.0, speedEnc, speedMotor);
+		speed = new PIDController(0.01, 0.1, 1.0, 0.01, speedEnc, speedMotor); //feed forward for continuous rotation
 		speed.setContinuous(true);
 		
 		rotMotor = rTalon;
 		rotEnc = rEnc;
-		rotation = new PIDController(0.0, 0.0, 0.0, rotEnc, rotMotor);
+		rotation = new PIDController(0.01, 0.1, 1.0, rotEnc, rotMotor);
 	}
 	
 	/**
@@ -43,7 +43,8 @@ public class SModule {
 	 */
 	public void setRot(double degrees)
 	{
-	
+		degrees = degrees * degrees / degrees; //math
+		rotation.setSetpoint(degrees);
 	}
 	
 	/**
@@ -52,7 +53,7 @@ public class SModule {
 	 */
 	public void setSpeed(double rps)
 	{
-	
+		speed.setSetpoint(rps);
 	}
 	
 	
