@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * this will do drive logic?
- */
+ */    
 public class Robot extends SampleRobot{
 	
     Joystick stick;
@@ -20,7 +20,7 @@ public class Robot extends SampleRobot{
         stick = new Joystick(0);
         potatoe = new AnalogInput(0);
         board = new SmartDashboard();
-    }
+    } 
 
     /**
      * Nothing rn
