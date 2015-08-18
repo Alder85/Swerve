@@ -16,6 +16,8 @@ public class Robot extends SampleRobot{
     CANTalon motor_bl;
     SmartDashboard board;
     
+    int dashboardCount;
+    
     double rot_blVal;
     
     public Robot() {
@@ -25,6 +27,7 @@ public class Robot extends SampleRobot{
         backleft = new SModule(motor_bl, rot_bl);
         board = new SmartDashboard();
         stick = new Joystick(0);
+        dashboardCount = 0;
     } 
 
     /**
@@ -39,18 +42,26 @@ public class Robot extends SampleRobot{
      */
     public void operatorControl() {
         while (isOperatorControl() && isEnabled()) {
-    		/*
+        	dashboardCount++;
+        	
+        	//motor_bl.set(0.2);
+    		
         	if(stick.getRawAxis(2) < -0.5)
-        		backleft.setRot(0);
+        		backleft.setRot(1.0);
         	else
-        		backleft.setRot(3.0);
-        		*/
-        	backleft.setRot(stick.getRawAxis(5) * 3);
-
-        	board.putNumber("Err", backleft.getErr());
-    		board.putNumber("AnalogValue", rot_bl.getAverageValue());
-    		board.putNumber("MotorVal", motor_bl.get());
-    		Timer.delay(0.005);	
+        		backleft.setRot(2.0);
+        		
+        		
+        	//backleft.setRot(stick.getRawAxis(5) * 3);
+        	//avoid lag from constant printing
+        	if(dashboardCount % 500 == 0)
+        	{
+	        	board.putNumber("Err", backleft.getErr());
+	    		board.putNumber("AnalogValue", rot_bl.getAverageValue());
+	    		board.putNumber("MotorVal", motor_bl.get());
+	    		board.putNumber("DesiredVal", backleft.getDegrees());
+        	}
+    		Timer.delay(0.0005);	
     	}
     }
     /**

@@ -48,10 +48,10 @@ public class SModule {
 	{
 		rotMotor = rTalon;
 		rotEnc = rEnc;
-		rotation = new PIDController(0.05, 0.001, 0, rotEnc, rotMotor);
+		rotation = new PIDController(0.025, 0.000, 0.0, rotEnc, rotMotor);
 		rotation.enable();
-		rotation.setOutputRange(-0.2, 0.2);
-		rotation.setAbsoluteTolerance(0.01);
+		rotation.setOutputRange(-0.25, 0.25);
+		//rotation.setAbsoluteTolerance(0.5);
 	}
 	
 	/**
@@ -64,6 +64,10 @@ public class SModule {
 		rotation.setSetpoint(degrees);
 	}
 	
+	public double getDegrees()
+	{
+		return rotation.getSetpoint();
+	}
 	public double getErr()
 	{
 		return rotation.getError();
