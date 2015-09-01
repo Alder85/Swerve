@@ -17,6 +17,7 @@ public class Robot extends SampleRobot{
     SmartDashboard board;
     
     int dashboardCount;
+    int dashUpdateRate;
     
     double rot_blVal;
     
@@ -41,20 +42,23 @@ public class Robot extends SampleRobot{
      * Start swerve tesgin
      */
     public void operatorControl() {
+    	backleft.setRot(0);
+    	backleft.enable();
         while (isOperatorControl() && isEnabled()) {
         	dashboardCount++;
         	
         	//motor_bl.set(0.2);
     		
-        	if(stick.getRawAxis(2) < -0.5)
-        		backleft.setRot(1.0);
-        	else
-        		backleft.setRot(2.0);
+        	//if(stick.getRawAxis(2) < -0.5)
+        	//	backleft.setRot(1.0);
+        	//else
+        	//	backleft.setRot(2.0);
+        	
         		
         		
         	//backleft.setRot(stick.getRawAxis(5) * 3);
         	//avoid lag from constant printing
-        	if(dashboardCount % 500 == 0)
+        	if(dashboardCount % 100 == 0)
         	{
 	        	board.putNumber("Err", backleft.getErr());
 	    		board.putNumber("AnalogValue", rot_bl.getAverageValue());

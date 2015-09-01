@@ -48,15 +48,20 @@ public class SModule {
 	{
 		rotMotor = rTalon;
 		rotEnc = rEnc;
-		rotation = new PIDController(0.025, 0.000, 0.0, rotEnc, rotMotor);
-		rotation.enable();
+		rotation = new PIDController(0.0, 0.00, 0.0, rotEnc, rotMotor); //0.065
+		//rotation.enable();
+		//rotation.setInputRange(1.4, 1.5);
 		rotation.setOutputRange(-0.25, 0.25);
-		//rotation.setAbsoluteTolerance(0.5);
+		rotation.setAbsoluteTolerance(0.1);
+	}
+	
+	public void enable()
+	{
+		rotation.enable();
 	}
 	
 	/**
-	 * 0 is straight forward, 360 is also straight forward
-	 * @param degrees set the degrees relative to 0
+o 0
 	 */
 	public void setRot(double degrees)
 	{
