@@ -42,24 +42,21 @@ public class Robot extends SampleRobot{
      * Start swerve tesgin
      */
     public void operatorControl() {
-    	backleft.setRot(0);
-    	backleft.enable();
+    	//backleft.setRot(3.2);
+    	double stickVal;
         while (isOperatorControl() && isEnabled()) {
+        	stickVal = (stick.getRawAxis(5) * -2.5) + 2.5;
+        	if(stickVal > 4.75)
+        		stickVal = 4.75;
+        	backleft.setRot(stickVal);
+        	
+        	backleft.update();
+        	
+        	
         	dashboardCount++;
-        	
-        	//motor_bl.set(0.2);
-    		
-        	//if(stick.getRawAxis(2) < -0.5)
-        	//	backleft.setRot(1.0);
-        	//else
-        	//	backleft.setRot(2.0);
-        	
-        		
-        		
-        	//backleft.setRot(stick.getRawAxis(5) * 3);
-        	//avoid lag from constant printing
         	if(dashboardCount % 100 == 0)
         	{
+        		board.putNumber("Voltage", rot_bl.getAverageVoltage());
 	        	board.putNumber("Err", backleft.getErr());
 	    		board.putNumber("AnalogValue", rot_bl.getAverageValue());
 	    		board.putNumber("MotorVal", motor_bl.get());

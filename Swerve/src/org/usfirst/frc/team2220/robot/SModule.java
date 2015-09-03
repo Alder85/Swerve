@@ -15,8 +15,8 @@ public class SModule {
 	
 	CANTalon rotMotor;
 	AnalogInput rotEnc; //Encoder rotEnc;
-	PIDController rotation;
-	
+	//PIDController rotation;
+	SPID rotation;
 	
 	/**
 	 * Constructor for the module, declares PID Controls
@@ -29,6 +29,7 @@ public class SModule {
 	 */
 	public SModule(CANTalon sTalon, Encoder sEnc, CANTalon rTalon, AnalogInput rEnc)
 	{
+		/*
 		speedEnc = sEnc;
 		speedMotor = sTalon;
 		speed = new PIDController(0.01, 0.1, 1.0, 0.01, speedEnc, speedMotor); //feed forward for continuous rotation
@@ -37,6 +38,7 @@ public class SModule {
 		rotMotor = rTalon;
 		rotEnc = rEnc;
 		rotation = new PIDController(0.01, 0.1, 1.0, rotEnc, rotMotor);
+		*/
 	}
 	
 	/**
@@ -47,17 +49,18 @@ public class SModule {
 	public SModule(CANTalon rTalon, AnalogInput rEnc)
 	{
 		rotMotor = rTalon;
-		rotEnc = rEnc;
-		rotation = new PIDController(0.0, 0.00, 0.0, rotEnc, rotMotor); //0.065
+		rotEnc = rEnc; //0.00088
+		rotation = new SPID(0.00408, 0.0, 0.0, rotMotor, rotEnc);
+		//rotation = new PIDController(0.0, 0.00, 0.0, rotEnc, rotMotor); //0.065
 		//rotation.enable();
 		//rotation.setInputRange(1.4, 1.5);
-		rotation.setOutputRange(-0.25, 0.25);
-		rotation.setAbsoluteTolerance(0.1);
+		//rotation.setOutputRange(-0.25, 0.25);
+		//rotation.setAbsoluteTolerance(0.1);
 	}
 	
-	public void enable()
+	public void update()
 	{
-		rotation.enable();
+		rotation.calculate();
 	}
 	
 	/**
