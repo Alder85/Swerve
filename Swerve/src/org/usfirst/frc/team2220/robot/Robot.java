@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * this will do drive logic?
+ * Overall drive logic and control for the swerve drive
  */    
 public class Robot extends SampleRobot{
 	
@@ -21,6 +21,9 @@ public class Robot extends SampleRobot{
     
     double rot_blVal;
     
+    /*
+     * Initialization of all motors, sensor etc
+     */
     public Robot() {
         //3395
         motor_bl = new CANTalon(8);
@@ -39,7 +42,7 @@ public class Robot extends SampleRobot{
     }
 
     /**
-     * Start swerve tesgin
+     * Start swerve testing
      */
     public void operatorControl() {
     	//backleft.setRot(3.2);
@@ -48,7 +51,7 @@ public class Robot extends SampleRobot{
         	stickVal = (stick.getRawAxis(5) * -2.5) + 2.5;
         	if(stickVal > 4.75)
         		stickVal = 4.75;
-        	backleft.setRot(stickVal);
+        	backleft.setRot(stickVal);  //essentially the wheel follows the joystick
         	
         	backleft.update();
         	
@@ -56,52 +59,22 @@ public class Robot extends SampleRobot{
         	dashboardCount++;
         	if(dashboardCount % 100 == 0)
         	{
-        		board.putNumber("Voltage", rot_bl.getAverageVoltage());
+        		board.putNumber("Voltage", rot_bl.getAverageVoltage());  
 	        	board.putNumber("Err", backleft.getErr());
 	    		board.putNumber("AnalogValue", rot_bl.getAverageValue());
 	    		board.putNumber("MotorVal", motor_bl.get());
 	    		board.putNumber("DesiredVal", backleft.getDegrees());
+	    		//In order:
+	    		//Encoder Value 0 to ~4.7V
+	    		//Error -250 to 250
+	    		//Encoder Value 0 to ~3900
+	    		//Value of the motor -1 to 1
+	    		//Setpoint
         	}
     		Timer.delay(0.0005);	
     	}
     }
-    /**
-     * Runs the motors with cool steering
-     */
-    /*
-    public void testEncoders() {
-        //myRobot.setSafetyEnabled(true);
-        //while (isOperatorControl() && isEnabled()) {
-            //myRobot.arcadeDrive(stick); // drive with arcade style (use right stick)
-        	
-        	//getValue = 0 to ~39000
-        	//getAccumulatedValue = continually adds the getValue
-        	//getVoltage = 0 to 5 volts
-        	//getAccumulatorCount = how many times the accumulator has counted
-        	//pidGet = with no pid control, just the voltage
-        	//getAverageValue = sample sizes the getValue
-        	board.putNumber("AnalogVoltage", potatoe.getAverageVoltage());
-        	board.putNumber("AnalogValue", potatoe.getAverageValue());
-        	
-        	digVal = digEncoder.get();
-        	board.putNumber("DigVal", digVal);
-        	
-        	gyroRate = dubBoard.getRate();
-        	board.putNumber("Gyro Rate ", gyroRate);
-        	
-        	gyroAngle = dubBoard.getAngle();
-        	board.putNumber("Gyro Angle ", gyroAngle);
-        	/*
-        	if(analogVal > 2.0 && analogVal < 3.0)
-        		motorRun.set(0.3);
-        	else
-        		motorRun.set(0);
-        	///
-        	
-            Timer.delay(0.005);		// wait for a motor update time
-        //}
-    }
-     */
+    
 
     /**
      * Runs during test mode

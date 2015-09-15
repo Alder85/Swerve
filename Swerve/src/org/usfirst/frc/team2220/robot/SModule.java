@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.TalonSRX;
 
+/*
+ * Represents an individual swerve module with two PID controllers, one for speed and one for rotation
+ */
 public class SModule {
 	
 	CANTalon speedMotor;
@@ -58,13 +61,19 @@ public class SModule {
 		//rotation.setAbsoluteTolerance(0.1);
 	}
 	
+	/*
+	 * Updates each PID controller
+	 * Should be constantly called
+	 */
 	public void update()
 	{
 		rotation.calculate();
 	}
 	
-	/**
-o 0
+	/*
+	 * Sets the setpoint
+	 * Will eventually be scaled to degrees, right now 0 to 5
+	 * @param degrees number of degrees, 0 to 360
 	 */
 	public void setRot(double degrees)
 	{
@@ -72,10 +81,16 @@ o 0
 		rotation.setSetpoint(degrees);
 	}
 	
+	/*
+	 * @return the setpoint
+	 */
 	public double getDegrees()
 	{
 		return rotation.getSetpoint();
 	}
+	/*
+	 * @return the error
+	 */
 	public double getErr()
 	{
 		return rotation.getError();
