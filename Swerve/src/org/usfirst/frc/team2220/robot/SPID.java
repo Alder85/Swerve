@@ -14,6 +14,8 @@ public class SPID {
 	private CANTalon rot;
 	private AnalogInput rotEnc;
 	private double setpoint;
+	private double prevErr;
+	private double offset;
 	
 	/*
 	 * Constructor to set constants
@@ -46,6 +48,8 @@ public class SPID {
 		double out;
 		out = aP + aI + aD;
 		rot.set(out);
+		
+		prevErr = err;
 	}
 	
 	/*
@@ -72,12 +76,25 @@ public class SPID {
 	 */
 	public double getError()
 	{
-		double out = rotEnc.getAverageVoltage() - setpoint;
+		double out = (rotEnc.getAverageVoltage() + offset);
+		if(out > 5)
+			out -= 5;
+		if(out < 0)
+			out = (5 + out);
+		out -= setpoint;
 		if(out > 2.5)
 			out -= 5;
 				//(setpoinf.5) - rotEnc.getAverageVoltage();
 		
 		return out * 100;
+	}
+	
+	/*
+	 * Offset value -2.5 to 2.5
+	 */
+	public void setOffset(double in)
+	{
+		offset = in;
 	}
 	
 	

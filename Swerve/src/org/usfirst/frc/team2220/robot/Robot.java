@@ -11,9 +11,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends SampleRobot{
 	
     Joystick stick;
+    
     SModule backleft;
     AnalogInput rot_bl;
     CANTalon motor_bl;
+    
+    SModule backright;
+    AnalogInput rot_br;
+    CANTalon motor_br;
+    
+    SModule frontleft;
+    AnalogInput rot_fl;
+    CANTalon motor_fl;
+    
+    SModule frontright;
+    AnalogInput rot_fr;
+    CANTalon motor_fr;
+    
     SmartDashboard board;
     
     int dashboardCount;
@@ -29,6 +43,19 @@ public class Robot extends SampleRobot{
         motor_bl = new CANTalon(8);
         rot_bl = new AnalogInput(0);
         backleft = new SModule(motor_bl, rot_bl);
+        
+        motor_br = new CANTalon(10);
+        rot_br = new AnalogInput(1);
+        backright = new SModule(motor_br, rot_br);
+        
+        motor_fr = new CANTalon(9);
+        rot_fr = new AnalogInput(3);
+        frontright = new SModule(motor_fr, rot_fr);
+        
+        motor_fl = new CANTalon(11);
+        rot_fl = new AnalogInput(2);
+        frontleft = new SModule(motor_fl, rot_fl);
+        
         board = new SmartDashboard();
         stick = new Joystick(0);
         dashboardCount = 0;
@@ -52,8 +79,13 @@ public class Robot extends SampleRobot{
         	if(stickVal > 4.75)
         		stickVal = 4.75;
         	backleft.setRot(stickVal);  //essentially the wheel follows the joystick
-        	
         	backleft.update();
+        	backright.setRot(stickVal);
+        	backright.update();
+        	frontleft.setRot(stickVal);
+        	frontleft.update();
+        	//frontright.setRot(stickVal);
+        	//frontright.update();
         	
         	
         	dashboardCount++;
@@ -64,6 +96,7 @@ public class Robot extends SampleRobot{
 	    		board.putNumber("AnalogValue", rot_bl.getAverageValue());
 	    		board.putNumber("MotorVal", motor_bl.get());
 	    		board.putNumber("DesiredVal", backleft.getDegrees());
+	    		board.putNumber("fr_voltage", rot_fr.getAverageVoltage());
 	    		//In order:
 	    		//Encoder Value 0 to ~4.7V
 	    		//Error -250 to 250
