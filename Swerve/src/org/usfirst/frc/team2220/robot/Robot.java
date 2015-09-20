@@ -43,18 +43,26 @@ public class Robot extends SampleRobot{
         motor_bl = new CANTalon(8);
         rot_bl = new AnalogInput(0);
         backleft = new SModule(motor_bl, rot_bl);
+        backleft.setRotPID(0.00608, 0.00002, 0.0);
+        backleft.setOff(-0.3);
         
         motor_br = new CANTalon(10);
         rot_br = new AnalogInput(1);
         backright = new SModule(motor_br, rot_br);
+        backright.setRotPID(0.00508, 0.0000, 0.0);
+        backright.setOff(-0.7);
         
         motor_fr = new CANTalon(9);
-        rot_fr = new AnalogInput(3);
+        rot_fr = new AnalogInput(2);
         frontright = new SModule(motor_fr, rot_fr);
+        frontright.setRotPID(0.00608, 0.00002, 0.0);
+        frontright.setOff(0);
         
         motor_fl = new CANTalon(11);
-        rot_fl = new AnalogInput(2);
+        rot_fl = new AnalogInput(3);
         frontleft = new SModule(motor_fl, rot_fl);
+        frontleft.setRotPID(0.00308, 0.0000/*2*/, 0.0);
+        frontleft.setOff(1.4);
         
         board = new SmartDashboard();
         stick = new Joystick(0);
@@ -78,12 +86,18 @@ public class Robot extends SampleRobot{
         	stickVal = (stick.getRawAxis(5) * -2.5) + 2.5;
         	if(stickVal > 4.75)
         		stickVal = 4.75;
+        	/*
+        	if(stick.getRawAxis(2) > 0)
+        		stickVal = 1;
+        	else
+        		stickVal = 4;
+        		*/
         	backleft.setRot(stickVal);  //essentially the wheel follows the joystick
         	backleft.update();
         	backright.setRot(stickVal);
         	backright.update();
         	frontleft.setRot(stickVal);
-        	frontleft.update();
+        	//frontleft.update();
         	//frontright.setRot(stickVal);
         	//frontright.update();
         	
@@ -96,7 +110,7 @@ public class Robot extends SampleRobot{
 	    		board.putNumber("AnalogValue", rot_bl.getAverageValue());
 	    		board.putNumber("MotorVal", motor_bl.get());
 	    		board.putNumber("DesiredVal", backleft.getDegrees());
-	    		board.putNumber("fr_voltage", rot_fr.getAverageVoltage());
+	    		//board.putNumber("fr_voltage", rot_fr.getAverageVoltage());
 	    		//In order:
 	    		//Encoder Value 0 to ~4.7V
 	    		//Error -250 to 250

@@ -14,9 +14,11 @@ public class SPID {
 	private CANTalon rot;
 	private AnalogInput rotEnc;
 	private double setpoint;
-	private double prevErr;
+	private double accumErr;
 	private double offset;
-	
+	private final double deadZone = 1;
+	private boolean magnitude = true;
+	private double oldSetpoint;
 	/*
 	 * Constructor to set constants
 	 * @param p Proportional constant
@@ -37,19 +39,26 @@ public class SPID {
 	/*
 	 * Uses error to determine motor speed
 	 * Currently only P is working
-	 * @WIP
+	 * @WIP I
 	 */
 	public void calculate()
 	{
 		double err = getError();
+		if(err == 0)
+		{
+			rot.set(0);
+			accumErr = 0;
+			return;
+		}
 		double aP = kP * err;
-		double aI = 0;
+		accumErr += err;
+		double aI = kI * accumErr;
 		double aD = 0;
 		double out;
 		out = aP + aI + aD;
 		rot.set(out);
 		
-		prevErr = err;
+		
 	}
 	
 	/*
@@ -59,6 +68,11 @@ public class SPID {
 	public void setSetpoint(double x)
 	{
 		setpoint = x;
+	}
+	
+	public boolean getMag()
+	{
+		return magnitude;
 	}
 	
 	/*
@@ -77,16 +91,19 @@ public class SPID {
 	public double getError()
 	{
 		double out = (rotEnc.getAverageVoltage() + offset);
-		if(out > 5)
+		while(out > 5)
 			out -= 5;
-		if(out < 0)
-			out = (5 + out);
+		while(out < 0)
+			out += 5;
 		out -= setpoint;
-		if(out > 2.5)
+		while(out > 2.5)
 			out -= 5;
-				//(setpoinf.5) - rotEnc.getAverageVoltage();
-		
-		return out * 100;
+		while(out < -2.5)
+			out += 5;
+		out *= 100;
+		if(out < deadZone && out > -deadZone) //deadzone
+			out = 0;
+		return out;
 	}
 	
 	/*

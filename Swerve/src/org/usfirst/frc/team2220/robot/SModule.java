@@ -53,7 +53,7 @@ public class SModule {
 	{
 		rotMotor = rTalon;
 		rotEnc = rEnc; //0.00088
-		rotation = new SPID(0.00208, 0.0, 0.0, rotMotor, rotEnc);
+		//rotation = new SPID(0.00208, 0.0, 0.0, rotMotor, rotEnc);
 		//rotation = new PIDController(0.0, 0.00, 0.0, rotEnc, rotMotor); //0.065
 		//rotation.enable();
 		//rotation.setInputRange(1.4, 1.5);
@@ -61,7 +61,12 @@ public class SModule {
 		//rotation.setAbsoluteTolerance(0.1);
 	}
 	
-	public void setoff(double off)
+	public void setRotPID(double P, double I, double D)
+	{
+		rotation = new SPID(P, I, D, rotMotor, rotEnc);
+	}
+	
+	public void setOff(double off)
 	{
 		rotation.setOffset(off);
 	}
