@@ -55,8 +55,13 @@ public class SPID {
 		double aI = kI * accumErr;
 		double aD = 0;
 		double out;
-		out = aP + aI + aD;
-		rot.set(out);
+		out = aP;// + aI + aD;
+		double maxVal = 0.5;
+		if(out > maxVal)
+			out = maxVal;
+		if(out < -maxVal)
+			out = -maxVal;
+		rot.set(-out);
 		
 		
 	}

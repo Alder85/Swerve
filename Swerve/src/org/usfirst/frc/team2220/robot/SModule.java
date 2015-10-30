@@ -32,18 +32,18 @@ public class SModule {
 	 */
 	public SModule(CANTalon sTalon, Encoder sEnc, CANTalon rTalon, AnalogInput rEnc)
 	{
-		/*
-		speedEnc = sEnc;
-		speedMotor = sTalon;
-		speed = new PIDController(0.01, 0.1, 1.0, 0.01, speedEnc, speedMotor); //feed forward for continuous rotation
-		speed.setContinuous(true);
-		
 		rotMotor = rTalon;
 		rotEnc = rEnc;
-		rotation = new PIDController(0.01, 0.1, 1.0, rotEnc, rotMotor);
-		*/
+		speedMotor = sTalon;
+		speedEnc = sEnc;
 	}
 	
+	public SModule(CANTalon rTalon, AnalogInput rEnc, CANTalon sTalon)
+	{
+		rotMotor = rTalon;
+		rotEnc = rEnc;
+		speedMotor = sTalon;
+	}
 	/**
 	 * Constructor for testing only rotation
 	 * @param rTalon Talon for rotational control
@@ -53,12 +53,16 @@ public class SModule {
 	{
 		rotMotor = rTalon;
 		rotEnc = rEnc; //0.00088
-		//rotation = new SPID(0.00208, 0.0, 0.0, rotMotor, rotEnc);
-		//rotation = new PIDController(0.0, 0.00, 0.0, rotEnc, rotMotor); //0.065
-		//rotation.enable();
-		//rotation.setInputRange(1.4, 1.5);
-		//rotation.setOutputRange(-0.25, 0.25);
-		//rotation.setAbsoluteTolerance(0.1);
+		
+	}
+	
+	/**
+	 * Set the speed of the talon
+	 * @param val desired speed of Speed Motor
+	 */
+	public void setSpeed(double val)
+	{
+		speedMotor.set(val);
 	}
 	
 	public void setRotPID(double P, double I, double D)
@@ -69,6 +73,11 @@ public class SModule {
 	public void setOff(double off)
 	{
 		rotation.setOffset(off);
+	}
+	
+	public void runMotor(double goVal)
+	{
+		speedMotor.set(0.25 * goVal);
 	}
 	
 	/*
@@ -106,14 +115,7 @@ public class SModule {
 		return rotation.getError();
 	}
 	
-	/**
-	 * Set the speed of the talon
-	 * @param rps desired rotations per second
-	 */
-	public void setSpeed(double rps)
-	{
-		speed.setSetpoint(rps);
-	}
+	
 	
 	
 }
