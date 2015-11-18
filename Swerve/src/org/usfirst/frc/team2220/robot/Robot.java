@@ -85,6 +85,37 @@ public class Robot extends SampleRobot{
     	
     }
 
+    
+    public double sqr(double x)
+    {
+    	return Math.pow(x, 2);
+    }
+    double fwd = stick.getRawAxis(1);
+	double str = stick.getRawAxis(0);
+	double rcw = stick.getRawAxis(5);
+	final double L = 5, W = 5; //base is square, so it doesn't matter
+	final double R = Math.sqrt(50); //sqrt(l^2+w^2)
+	double a, b, c, d;
+	double ws1, ws2, ws3, ws4;
+	double wa1, wa2, wa3, wa4;
+	public void updateSwerveVals()
+	{
+		a = str - rcw;
+    	b = str + rcw;
+    	c = fwd - rcw;
+    	d = fwd + rcw;
+    	
+    	ws1 = Math.sqrt(sqr(b) + sqr(c));
+    	ws2 = Math.sqrt(sqr(b) + sqr(d));
+    	ws3 = Math.sqrt(sqr(a) + sqr(d));
+    	ws4 = Math.sqrt(sqr(a) + sqr(c));
+    	
+    	wa1 = Math.atan2(b, c) * 180 / Math.PI;
+    	wa2 = Math.atan2(b, d) * 180 / Math.PI;
+    	wa3 = Math.atan2(a, d) * 180 / Math.PI;
+    	wa4 = Math.atan2(a, c) * 180 / Math.PI;
+    	
+	}
     /**
      * Start swerve testing
      */
@@ -101,6 +132,14 @@ public class Robot extends SampleRobot{
         	else
         		stickVal = 4;
         		*/
+        	//1 = forward / bacl
+        	//0 = LTR
+        	//5 = twist
+        	
+        	
+        			
+        	
+        	
         	backleft.update();
         	backright.update();
         	frontleft.update();
