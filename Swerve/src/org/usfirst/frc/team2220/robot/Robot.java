@@ -20,6 +20,7 @@ public class Robot extends SampleRobot{
     SModule backright;
     AnalogInput rot_br;
     CANTalon motor_br;
+    CANTalon speed_br;
     
     SModule frontleft;
     AnalogInput rot_fl;
@@ -53,7 +54,8 @@ public class Robot extends SampleRobot{
         
         motor_br = new CANTalon(10);
         rot_br = new AnalogInput(1);
-        backright = new SModule(motor_br, rot_br);
+        speed_br = new CANTalon(6);
+        backright = new SModule(motor_br, rot_br, speed_br);
         backright.setRotPID(-0.00308, 0.0000, 0.0);
         backright.setOff(-0.7);
         
@@ -69,7 +71,7 @@ public class Robot extends SampleRobot{
         speed_fl = new CANTalon(3);
         frontleft = new SModule(motor_fl, rot_fl, speed_fl);
         frontleft.setRotPID(-0.00308, 0.0000/*2*/, 0.0);
-        frontleft.setOff(1.4);
+        frontleft.setOff(1);
         
         board = new SmartDashboard();
         stick = new Joystick(0);
@@ -99,20 +101,30 @@ public class Robot extends SampleRobot{
         	else
         		stickVal = 4;
         		*/
+        	backleft.update();
+        	backright.update();
+        	frontleft.update();
+        	backright.update();
+        	/*
         	double goVal = stick.getRawAxis(1);
+        	
         	backleft.runMotor(goVal);
-        	//backright.runMotor(goVal);
+        	backright.runMotor(goVal);
         	frontleft.runMotor(goVal);
         	frontright.runMotor(goVal);
+        	
         	backleft.setRot(stickVal);  //essentially the wheel follows the joystick
         	backleft.update();
+        	
         	backright.setRot(stickVal);
-        	//backright.update();
+        	backright.update();
+        	
         	frontleft.setRot(stickVal);
         	frontleft.update();
+        	
         	frontright.setRot(stickVal);
         	frontright.update();
-        	
+        	*/
         	
         	dashboardCount++;
         	if(dashboardCount % 100 == 0)
